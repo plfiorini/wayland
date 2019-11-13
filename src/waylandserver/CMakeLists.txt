@@ -24,12 +24,20 @@ ecm_add_qtwayland_server_protocol(SOURCES
 ecm_add_qtwayland_server_protocol(SOURCES
     PROTOCOL "${CMAKE_CURRENT_SOURCE_DIR}/../../data/protocols/liri-shell.xml"
     BASENAME "liri-shell")
+ecm_add_qtwayland_server_protocol(SOURCES
+    PROTOCOL "${WaylandProtocols_DATADIR}/unstable/xdg-foreign/xdg-foreign-unstable-v2.xml"
+    BASENAME "xdg-foreign-unstable-v2")
 
 if(IS_ABSOLUTE "${INSTALL_LIBEXECDIR}")
     set(LIBEXECDIR "${INSTALL_LIBEXECDIR}")
 else()
     set(LIBEXECDIR "${CMAKE_INSTALL_PREFIX}/${INSTALL_LIBEXECDIR}")
 endif()
+
+set_source_files_properties(
+    "${CMAKE_CURRENT_BINARY_DIR}/wayland-xdg-foreign-unstable-v2-server-protocol.h"
+    PROPERTIES SKIP_AUTOMOC ON
+)
 
 liri_add_module(WaylandServer
     DESCRIPTION
@@ -59,6 +67,9 @@ liri_add_module(WaylandServer
         waylandwlrscreencopyv1.cpp
         waylandwlrscreencopyv1.h
         waylandwlrscreencopyv1_p.h
+        waylandxdgforeignv2.cpp
+        waylandxdgforeignv2.h
+        waylandxdgforeignv2_p.h
         logging.cpp
         logging_p.h
         ${SOURCES}
@@ -71,12 +82,14 @@ liri_add_module(WaylandServer
         WaylandWlrLayerShellV1
         WaylandWlrOutputManagerV1
         WaylandWlrScreencopyV1
+        WaylandXdgForeignV2
     PRIVATE_HEADERS
         gtkshell_p.h
         waylandlirishell_p.h
         waylandwlrforeigntoplevelmanagementv1_p.h
         waylandwlrlayershellv1_p.h
         waylandwlrscreencopyv1_p.h
+        waylandxdgforeignv2_p.h
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-gtk-shell.h"
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-gtk-shell-server-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-server-decoration.h"
@@ -93,6 +106,8 @@ liri_add_module(WaylandServer
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-output-management-unstable-v1-server-protocol.h"
         "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-wlr-screencopy-unstable-v1.h"
         "${CMAKE_CURRENT_BINARY_DIR}/wayland-wlr-screencopy-unstable-v1-server-protocol.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/qwayland-server-xdg-foreign-unstable-v2.h"
+        "${CMAKE_CURRENT_BINARY_DIR}/wayland-xdg-foreign-unstable-v2-server-protocol.h"
     DEFINES
         QT_NO_CAST_FROM_ASCII
         QT_NO_FOREACH
